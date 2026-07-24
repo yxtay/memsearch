@@ -91,14 +91,14 @@ def get_db_path() -> str:
     return default
 
 
-def get_turn_db_path(project_dir: str) -> str:
-    """Return the derived turn metadata database path for a project."""
-    return os.path.join(project_dir, ".memsearch", "opencode-turns.db")
+def get_turn_db_path(memsearch_dir: str) -> str:
+    """Return the sidecar database path inside the resolved memsearch storage dir."""
+    return os.path.join(memsearch_dir, "opencode-turns.db")
 
 
-def open_turn_db(project_dir: str) -> sqlite3.Connection:
+def open_turn_db(memsearch_dir: str) -> sqlite3.Connection:
     """Open the sidecar turn database and ensure its schema exists."""
-    turn_db_path = get_turn_db_path(project_dir)
+    turn_db_path = get_turn_db_path(memsearch_dir)
     Path(turn_db_path).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(turn_db_path, timeout=5)
     conn.row_factory = sqlite3.Row
